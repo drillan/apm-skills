@@ -14,7 +14,7 @@ APM (Agent Package Manager) の運用支援 Agent Skills パッケージ。GitHu
 
 ## 対象エージェント
 
-主想定は **Claude Code**。`gh skill install --agent <name>` で claude-code / github-copilot / cursor / codex / gemini-cli / antigravity に対応 (形式互換、発動精度はエージェント依存)。APM 側は `--target claude` / `--target codex` 等で同等の切替が可能。
+スキル本体は APM 操作の支援に徹しているためエージェント非依存。配置先の切り替えは APM の `--target` または gh CLI の `--agent` で行う (claude / copilot / codex / cursor / gemini / opencode / antigravity 等が選択可)。発動精度は各エージェントの skill discovery 実装に依存する。
 
 ## インストール
 
@@ -22,16 +22,32 @@ APM (Agent Package Manager) の運用支援 Agent Skills パッケージ。GitHu
 
 ### 推奨: APM (Agent Package Manager) で一括導入
 
-`--target claude` 指定で 1 コマンド導入。`apm.yml`、`apm.lock.yaml`、`.gitignore` が自動生成され、5 スキルが `.claude/skills/` 配下に配置される。
+`--target` で対象エージェントを指定し、1 コマンド導入する。`apm.yml`、`apm.lock.yaml`、`.gitignore` が自動生成され、エージェント別ディレクトリに 5 スキルが配置される。
 
 ```bash
 cd your-project
-apm install drillan/apm-skills --target claude
-git add .claude/skills/ apm.yml apm.lock.yaml .gitignore
+apm install drillan/apm-skills --target <agent>     # 下表から選択
+git add .<placement>/ apm.yml apm.lock.yaml .gitignore
 git commit -m "chore: install apm-skills via APM"
 ```
 
-`--target` を省略すると `.github/skills/` (Copilot 用レイアウト) に配置される。他エージェントを使う場合は `claude` の部分を `codex` / `copilot` / `cursor` / `gemini` 等に置き換え (複数なら `claude,copilot` のように comma 区切り、全部対応なら `all`)。
+`<agent>` と配置先の対応:
+
+| `--target` | 配置先 | 備考 |
+| --- | --- | --- |
+| `claude` | `.claude/skills/` | Claude Code |
+| `copilot` | `.github/skills/` | GitHub Copilot (`--target` 省略時のデフォルト) |
+| `codex` | `.codex/` | Codex (`-g` 非対応) |
+| `cursor` | `.cursor/` | Cursor |
+| `gemini` | `.gemini/` | Gemini CLI |
+| `opencode` | `.opencode/` | OpenCode |
+
+複数指定は `claude,copilot` のように comma 区切り、全部対応なら `all`。例えば Claude Code を使うなら:
+
+```bash
+apm install drillan/apm-skills --target claude
+git add .claude/skills/ apm.yml apm.lock.yaml .gitignore
+```
 
 別の開発者がリポジトリを clone した後は、引数なしで再現できる。
 
@@ -45,10 +61,10 @@ APM 本体の導入手順は https://github.com/microsoft/apm を参照 (例: `c
 
 #### ユーザースコープに入れる場合
 
-複数プロジェクトで使い回すなら `-g` (`--global`) を付ける。manifest が `~/.apm/` に、スキルが `~/.claude/skills/` に配置される。
+複数プロジェクトで使い回すなら `-g` (`--global`) を付ける。manifest が `~/.apm/` に、スキルがエージェント別の user-scope ディレクトリ (Claude Code なら `~/.claude/skills/`) に配置される。
 
 ```bash
-apm install drillan/apm-skills --target claude -g
+apm install drillan/apm-skills --target <agent> -g
 ```
 
 user scope の対応状況は target ごとに異なる:
@@ -57,7 +73,7 @@ user scope の対応状況は target ごとに異なる:
 - 部分対応: `copilot` / `cursor` / `opencode` (一部のプリミティブ非対応)
 - 非対応: `codex` (project scope のみ利用可)
 
-アンインストールは `apm uninstall drillan/apm-skills -g`。
+アンインストールは `apm uninstall drillan/apm-skills -g` (target は `apm.yml` から復元される)。
 
 #### gh CLI 経由のスキルが既に存在する場合
 
@@ -65,17 +81,17 @@ user scope の対応状況は target ごとに異なる:
 
 ### 代替: GitHub CLI で一括インストール
 
-APM を導入できない環境では `gh skill install` をシェルループでまとめて実行する。
+APM を導入できない環境では `gh skill install` をシェルループでまとめて実行する。`--agent` で対象エージェントを指定する。
 
 ```bash
 cd your-project
+AGENT=claude-code   # github-copilot / cursor / codex / gemini-cli / antigravity 等から選択
 for s in apm-install apm-init apm-update apm-uninstall apm-audit; do
-  gh skill install drillan/apm-skills "$s" --agent claude-code --scope project
+  gh skill install drillan/apm-skills "$s" --agent "$AGENT" --scope project
 done
-git add .claude/skills/ && git commit -m "chore: install apm-skills"
 ```
 
-ユーザースコープに入れる場合は `--scope user`。他エージェントを使う場合は `--agent` の値を `github-copilot` / `cursor` / `codex` / `gemini-cli` / `antigravity` 等に置き換える。Claude Code 以外の多くは `.agents/skills/` を共有する規約なので、`git add` 先もそれに合わせる。各スキルは description の発火条件で APM 不使用プロジェクトでは発動しないため、user スコープでも誤発火しない。
+`git add` 先はエージェント別 (Claude Code = `.claude/skills/`、GitHub Copilot ほか多数 = `.agents/skills/`)。ユーザースコープに入れる場合は `--scope user`。各スキルは description の発火条件で APM 不使用プロジェクトでは発動しないため、user スコープでも誤発火しない。
 
 ## 典型シナリオ
 
