@@ -1,0 +1,3 @@
+name: apm-skills
+version: 0.1.0
+description: APM (Agent Package Manager) の運用支援スキル集 (5 個)。install / init / update / uninstall / audit を網羅する。
