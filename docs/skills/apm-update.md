@@ -28,11 +28,11 @@ apm audit --ci
 | `apm.lock.yaml` の `content_hash` | 更新される |
 | `deployed_files` の中身 (`.claude/skills/` 等) | 更新される |
 | `apm.yml` の依存記述 | 変更されない |
-| `@v1.0.0` / `@<sha>` で pin した依存 | スキップされる (drift 防止) |
+| `#v1.0.0` / `#<sha>` で pin した依存 | スキップされる (drift 防止) |
 
 ## pin の意味
 
-`@v1.0.0` で pin した依存は `apm update` で**更新されない**仕様です。これは production / CI 用途で意図しない drift を防ぐためです。意図的にバージョン変更したい場合は `apm.yml` の pin 表記を書き換えてから `apm install` します。
+`#v1.0.0` で pin した依存は `apm update` で**更新されない**仕様です。これは production / CI 用途で意図しない drift を防ぐためです。意図的にバージョン変更したい場合は `apm.yml` の pin 表記を書き換えてから `apm install` します。
 
 ## 注意点
 

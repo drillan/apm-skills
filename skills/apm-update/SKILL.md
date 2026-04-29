@@ -1,6 +1,6 @@
 ---
 name: apm-update
-description: APM 依存を最新版に更新するスキル。`apm outdated` で更新可能なパッケージを確認し、`apm update` で apm.lock.yaml を再生成する。pin 済 (`@v1.0.0` 等) のものはスキップされる仕様。「依存を更新したい」「outdated 確認」「apm update」「最新化」といった依頼に発火する。更新後は `apm-audit` での security 検証を案内する。
+description: APM 依存を最新版に更新するスキル。`apm outdated` で更新可能なパッケージを確認し、`apm update` で apm.lock.yaml を再生成する。pin 済 (`#v1.0.0` 等) のものはスキップされる仕様。「依存を更新したい」「outdated 確認」「apm update」「最新化」といった依頼に発火する。更新後は `apm-audit` での security 検証を案内する。
 license: MIT
 allowed-tools: Bash, Read
 ---
@@ -24,7 +24,7 @@ cd <project-root>
 apm outdated
 ```
 
-各依存について「現在の resolved_commit」と「remote 最新」が比較表示される。pin (`@v1.0.0`、`@<sha>`) されたものはスキップされる旨が明示される。
+各依存について「現在の resolved_commit」と「remote 最新」が比較表示される。pin (`#v1.0.0`、`#<sha>`) されたものはスキップされる旨が明示される。
 
 ### 2. 依存の更新
 
@@ -63,7 +63,7 @@ git commit -m "chore: update APM dependencies"
 
 ## 注意点
 
-- **pin の効果**: `@v1.0.0` や `@<sha>` で pin した依存は `apm update` で**更新されない**。これは仕様で、production / CI 用途の drift 防止が意図。意図的にバージョン変更したい場合は `apm.yml` の pin 表記を書き換えてから `apm install` する。
+- **pin の効果**: `#v1.0.0` や `#<sha>` で pin した依存は `apm update` で**更新されない**。これは仕様で、production / CI 用途の drift 防止が意図。意図的にバージョン変更したい場合は `apm.yml` の pin 表記を書き換えてから `apm install` する。
 - **transitive 依存**: 親パッケージが pin されていても、その親が依存する transitive な package は更新される可能性がある。`apm.lock.yaml` の差分で確認する。
 - **deployed files の競合**: ローカルでスキル md を手動編集していた場合、`apm update` が上書きする可能性がある。事前に `--dry-run` (もし対応していれば) や git diff で確認する。
 - **lockfile を commit する設計**: APM は npm 同様、`apm.lock.yaml` を commit 対象とする。これにより別の開発者が `apm install` (引数なし) で同一バージョンを再現できる。

@@ -1,6 +1,6 @@
 ---
 name: apm-install
-description: APM パッケージを Claude Code 等のエージェント設定に追加するスキル。`apm install <owner/repo>` の実行、`--target` (claude/copilot/codex/cursor/gemini 等) の選択、ユーザースコープ (`-g`) の判断、`@v1.0.0` 等での version pin 提案、collision 検知時の `--force` 判断を行う。「APM パッケージを入れたい」「skill を追加して」「apm install」といった依頼や、apm.yml が存在するプロジェクトで依存追加を求められたときに発火する。
+description: APM パッケージを Claude Code 等のエージェント設定に追加するスキル。`apm install <owner/repo>` の実行、`--target` (claude/copilot/codex/cursor/gemini 等) の選択、ユーザースコープ (`-g`) の判断、`#v1.0.0` 等での version pin 提案、collision 検知時の `--force` 判断を行う。「APM パッケージを入れたい」「skill を追加して」「apm install」といった依頼や、apm.yml が存在するプロジェクトで依存追加を求められたときに発火する。
 license: MIT
 allowed-tools: Bash, Read, Write, Edit
 ---
@@ -55,12 +55,12 @@ user scope の対応状況は target ごとに異なる:
 
 ### 3. Version pin (production / CI で推奨)
 
-drift 防止のため `@v1.0.0` (tag) または `@<full-sha>` で pin する。
+drift 防止のため `#v1.0.0` (tag) または `#<full-sha>` で pin する。
 
 ```bash
-apm install owner/repo@v1.2.0 --target claude
+apm install owner/repo#v1.2.0 --target claude
 # または full SHA
-apm install owner/repo@abc1234567890abcdef1234567890abcdef1234567 --target claude
+apm install owner/repo#abc1234567890abcdef1234567890abcdef1234567 --target claude
 ```
 
 CI で固定 SHA を取得する例:
