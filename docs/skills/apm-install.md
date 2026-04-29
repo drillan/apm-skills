@@ -17,7 +17,7 @@ apm install <owner/repo> --target claude
 apm install <owner/repo> --target claude -g
 
 # Version pin (production 推奨)
-apm install <owner/repo>@v1.0.0 --target claude
+apm install <owner/repo>#v1.0.0 --target claude
 
 # 副作用ゼロのプレビュー
 apm install <owner/repo> --target claude --dry-run -v
