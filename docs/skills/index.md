@@ -24,3 +24,5 @@ apm-audit
 | `apm-uninstall` | `apm-audit` (削除後の整合性確認) |
 
 `apm-audit` は他のスキルの後段として呼ばれることが多く、CI に組み込んでおくと PR 単位で自動的に security 検証が走ります。
+
+APM 全般の概念 (target / runtime / scope / pin / policy など) の定義は [概念リファレンス](../concepts) を参照してください。CLI 導入や最初のインストール手順は [APM を始める](../getting-started) にまとめてあります。

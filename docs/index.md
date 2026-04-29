@@ -44,6 +44,8 @@ gh skill install drillan/apm-skills apm-install --agent <agent> --scope project
 :maxdepth: 2
 :caption: Contents
 
+getting-started
+concepts
 skills/index
 ```
 
