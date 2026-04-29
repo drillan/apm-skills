@@ -1,5 +1,9 @@
 # apm-skills
 
+[![Docs](https://img.shields.io/badge/docs-online-blue)](https://drillan.github.io/apm-skills/)
+
+📖 ドキュメント: <https://drillan.github.io/apm-skills/>
+
 APM (Agent Package Manager) の運用支援 Agent Skills パッケージ。GitHub の `gh skill install` または APM 自身で配布可能。
 
 ## 提供スキル (5 個)
