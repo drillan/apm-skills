@@ -132,6 +132,6 @@ APM パッケージのライフサイクルは 5 段階で構成されます。
 ## 次に読むもの
 
 - 用語の正確な定義 (target / runtime / scope / pin / policy など): [APM の概念リファレンス](concepts)
-- 共通の落とし穴 (本ドキュメント執筆時に遭遇した実例): [概念リファレンス内の落とし穴セクション](concepts.md#pitfalls)
+- 共通の落とし穴 (本ドキュメント執筆時に遭遇した実例): {ref}`概念リファレンス内の落とし穴セクション <pitfalls>`
 - 各操作の詳細手順: [スキル一覧](skills/index)
 - 公式ドキュメント (英語): <https://microsoft.github.io/apm/>
